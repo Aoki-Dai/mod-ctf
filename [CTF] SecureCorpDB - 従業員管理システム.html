@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<!-- saved from url=(0032)http://10.2.4.100:8081/index.php -->
+<html lang="ja"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[CTF] SecureCorpDB - 従業員管理システム</title>
+    <link rel="stylesheet" href="./[CTF] SecureCorpDB - 従業員管理システム_files/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>SecureCorpDB</h1>
+            <p>従業員管理システム</p>
+        </div>
+
+        <div class="login-box">
+            <h2>ログイン</h2>
+
+            
+
+            <form method="POST" action="http://10.2.4.100:8081/index.php">
+                <div class="form-group">
+                    <label for="username">ユーザー名:</label>
+                    <input type="text" id="username" name="username" required="" value="" autocomplete="username">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">パスワード:</label>
+                    <input type="password" id="password" name="password" required="" autocomplete="current-password">
+                </div>
+
+                <div class="form-group captcha-group">
+                    <label for="captcha">CAPTCHA:</label>
+                    <div class="captcha-container">
+                        <img src="./[CTF] SecureCorpDB - 従業員管理システム_files/captcha.php" alt="CAPTCHA" class="captcha-image" id="captcha-img">
+                    </div>
+                    <input type="text" id="captcha" name="captcha" required="" placeholder="コードを入力" maxlength="5">
+                </div>
+
+                <button type="submit">ログイン</button>
+
+            </form>
+
+            <div class="demo-accounts">
+                <h3>デモアカウント</h3>
+                <ul>
+                    <li>ユーザー名: <strong>guest</strong> / パスワード: <strong>guest</strong></li>
+                    <li>ユーザー名: <strong>john</strong> / パスワード: <strong>password123</strong></li>
+                    <li>ユーザー名: <strong>alice</strong> / パスワード: <strong>qwerty456</strong></li>
+                </ul>
+                <p class="hint">管理者の認証情報はデータベース内に隠されています。</p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p><small>Webセキュリティチャレンジ - データベース内の隠されたフラグを見つけてください</small></p>
+        </div>
+    </div>
+
+<div id="app_root"><template shadowrootmode="open"><div><!----><style>@import url(chrome-extension://mcfncmgpoefggbpeloigfonenlmamgjf/assets/content.css);</style></div></template></div><deepl-input-controller translate="no"><template shadowrootmode="open"><link rel="stylesheet" href="chrome-extension://cofdbpoegempjloogbagkncekinflcnj/build/content.css"><div dir="ltr" style="visibility: initial !important;"><div class="dl-input-translation-container svelte-95aucy"><div></div></div></div></template></deepl-input-controller></body></html>

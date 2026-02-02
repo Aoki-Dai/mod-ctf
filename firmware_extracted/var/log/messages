@@ -1,0 +1,5 @@
+Jan  1 00:00:01 mod-device kernel: Booting Linux on physical CPU 0x0
+Jan  1 00:00:01 mod-device kernel: Linux version 4.14.63
+Jan  1 00:00:02 mod-device daemon.info procd: Instance network::instance1 s in a crash loop
+Jan  1 00:00:15 mod-device daemon.notice netifd: Interface 'lan' is now up
+Jan  1 00:00:16 mod-device daemon.info dnsmasq: started, version 2.80

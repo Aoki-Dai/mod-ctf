@@ -1,0 +1,4 @@
+config system
+    option hostname 'mod-device-backup'
+    option timezone 'UTC'
+    option description 'Backup configuration'

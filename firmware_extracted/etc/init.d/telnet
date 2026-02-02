@@ -1,0 +1,7 @@
+#!/bin/sh
+start() {
+    telnetd -l /bin/login
+}
+stop() {
+    killall telnetd
+}

@@ -1,0 +1,4 @@
+config system
+    option hostname 'mod-device'
+    option timezone 'UTC'
+    option description 'Industrial MOD Gateway Device'

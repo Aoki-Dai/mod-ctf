@@ -1,0 +1,3 @@
+Version: 2.1.8
+Type: WiFi Firmware
+Build: 2025-11-05

@@ -1,0 +1,8 @@
+config network
+    option init network
+config wireless
+    option init network
+config firewall
+    option init firewall
+config dhcp
+    option init dnsmasq

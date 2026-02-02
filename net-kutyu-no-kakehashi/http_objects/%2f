@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>プラント監視制御 - ログイン</title>
+    <meta charset="utf-8">
+    <style>
+        body { font-family: Arial, sans-serif; background: #1a1a2e; color: #eee; margin: 0; padding: 20px; }
+        .container { max-width: 400px; margin: 100px auto; background: #16213e; padding: 30px; border-radius: 10px; box-shadow: 0 0 20px rgba(0,255,255,0.2); }
+        h1 { text-align: center; color: #0ff; font-size: 24px; }
+        input { width: 100%; padding: 12px; margin: 10px 0; box-sizing: border-box; background: #0f3460; border: 1px solid #0ff; color: #fff; border-radius: 5px; }
+        button { width: 100%; padding: 12px; background: #0ff; color: #000; border: none; cursor: pointer; font-weight: bold; border-radius: 5px; }
+        button:hover { background: #00cccc; }
+        .error { color: #ff6b6b; text-align: center; }
+        .info { color: #888; font-size: 12px; margin-top: 20px; text-align: center; }
+        .warning { color: #fbbf24; font-size: 11px; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>プラント監視制御システム</h1>
+        <form id="loginForm">
+            <input type="text" id="username" placeholder="ユーザー名">
+            <input type="password" id="password" placeholder="パスワード">
+            <button type="submit">ログイン</button>
+        </form>
+        <p id="error" class="error"></p>
+        <p class="warning">ChaCha20暗号化接続</p>
+        <p class="info">産業制御システム v3.1.4</p>
+    </div>
+
+    <!-- Obfuscated Security Module - ChaCha20 Implementation -->
+    <script>
+        // Obfuscated configuration strings
+        var _0x5c8a = ['\x50\x4c\x41\x4e\x54\x5f\x43\x68\x61\x43\x68\x61\x32\x30\x5f\x53\x65\x63\x72\x65\x74\x4b\x65\x79\x5f\x32\x30\x32\x36\x21\x21',
+            '\x50\x4c\x43\x5f\x4e\x30\x6e\x63\x33\x5f\x21\x21',
+            '\x6c\x6f\x67\x69\x6e\x46\x6f\x72\x6d','\x75\x73\x65\x72\x6e\x61\x6d\x65',
+            '\x70\x61\x73\x73\x77\x6f\x72\x64','\x65\x72\x72\x6f\x72',
+            '\x2f\x61\x70\x69\x2f\x6c\x6f\x67\x69\x6e','\x50\x4f\x53\x54',
+            '\x61\x70\x70\x6c\x69\x63\x61\x74\x69\x6f\x6e\x2f\x6a\x73\x6f\x6e'];
+
+        function _0xf7e2(_0x1a2b) { return _0x5c8a[_0x1a2b]; }
+
+        // Retrieve key and nonce
+        var _0x9k3y = (function() { return _0xf7e2(0x0); })();
+        var _0xn0nc3 = (function() { return _0xf7e2(0x1); })();
+
+        // ChaCha20 Quarter Round
+        function _0xqr(_0xs, _0xa, _0xb, _0xc, _0xd) {
+            _0xs[_0xa] = (_0xs[_0xa] + _0xs[_0xb]) >>> 0;
+            _0xs[_0xd] = ((_0xs[_0xd] ^ _0xs[_0xa]) >>> 0);
+            _0xs[_0xd] = ((_0xs[_0xd] << 16) | (_0xs[_0xd] >>> 16)) >>> 0;
+            _0xs[_0xc] = (_0xs[_0xc] + _0xs[_0xd]) >>> 0;
+            _0xs[_0xb] = ((_0xs[_0xb] ^ _0xs[_0xc]) >>> 0);
+            _0xs[_0xb] = ((_0xs[_0xb] << 12) | (_0xs[_0xb] >>> 20)) >>> 0;
+            _0xs[_0xa] = (_0xs[_0xa] + _0xs[_0xb]) >>> 0;
+            _0xs[_0xd] = ((_0xs[_0xd] ^ _0xs[_0xa]) >>> 0);
+            _0xs[_0xd] = ((_0xs[_0xd] << 8) | (_0xs[_0xd] >>> 24)) >>> 0;
+            _0xs[_0xc] = (_0xs[_0xc] + _0xs[_0xd]) >>> 0;
+            _0xs[_0xb] = ((_0xs[_0xb] ^ _0xs[_0xc]) >>> 0);
+            _0xs[_0xb] = ((_0xs[_0xb] << 7) | (_0xs[_0xb] >>> 25)) >>> 0;
+        }
+
+        // ChaCha20 Block Generation
+        function _0xblk(_0xkey, _0xnonce, _0xctr) {
+            // Pad key to 32 bytes, nonce to 12 bytes
+            while (_0xkey.length < 32) _0xkey += '\x00';
+            _0xkey = _0xkey.substring(0, 32);
+            while (_0xnonce.length < 12) _0xnonce += '\x00';
+            _0xnonce = _0xnonce.substring(0, 12);
+
+            // Constants: "expand 32-byte k"
+            var _0xst = [0x61707865, 0x3320646e, 0x79622d32, 0x6b206574];
+
+            // Key words
+            for (var i = 0; i < 8; i++) {
+                _0xst.push((_0xkey.charCodeAt(i*4) | (_0xkey.charCodeAt(i*4+1) << 8) |
+                           (_0xkey.charCodeAt(i*4+2) << 16) | (_0xkey.charCodeAt(i*4+3) << 24)) >>> 0);
+            }
+
+            // Counter
+            _0xst.push(_0xctr >>> 0);
+
+            // Nonce words
+            for (var i = 0; i < 3; i++) {
+                _0xst.push((_0xnonce.charCodeAt(i*4) | (_0xnonce.charCodeAt(i*4+1) << 8) |
+                           (_0xnonce.charCodeAt(i*4+2) << 16) | (_0xnonce.charCodeAt(i*4+3) << 24)) >>> 0);
+            }
+
+            var _0xws = _0xst.slice();
+
+            // 20 rounds
+            for (var i = 0; i < 10; i++) {
+                _0xqr(_0xws, 0, 4, 8, 12);
+                _0xqr(_0xws, 1, 5, 9, 13);
+                _0xqr(_0xws, 2, 6, 10, 14);
+                _0xqr(_0xws, 3, 7, 11, 15);
+                _0xqr(_0xws, 0, 5, 10, 15);
+                _0xqr(_0xws, 1, 6, 11, 12);
+                _0xqr(_0xws, 2, 7, 8, 13);
+                _0xqr(_0xws, 3, 4, 9, 14);
+            }
+
+            var _0xout = [];
+            for (var i = 0; i < 16; i++) {
+                var _0xv = (_0xws[i] + _0xst[i]) >>> 0;
+                _0xout.push(_0xv & 0xff);
+                _0xout.push((_0xv >> 8) & 0xff);
+                _0xout.push((_0xv >> 16) & 0xff);
+                _0xout.push((_0xv >> 24) & 0xff);
+            }
+            return _0xout;
+        }
+
+        // ChaCha20 Encrypt
+        function _0xenc(_0xpt) {
+            var _0xct = [];
+            var _0xctr = 0;
+            for (var i = 0; i < _0xpt.length; i += 64) {
+                var _0xks = _0xblk(_0x9k3y, _0xn0nc3, _0xctr);
+                for (var j = 0; j < 64 && (i + j) < _0xpt.length; j++) {
+                    _0xct.push(_0xpt.charCodeAt(i + j) ^ _0xks[j]);
+                }
+                _0xctr++;
+            }
+            var _0xb64 = '';
+            for (var i = 0; i < _0xct.length; i++) {
+                _0xb64 += String.fromCharCode(_0xct[i]);
+            }
+            return btoa(_0xb64);
+        }
+
+        // Form handler
+        document['\x67\x65\x74\x45\x6c\x65\x6d\x65\x6e\x74\x42\x79\x49\x64'](_0xf7e2(0x2))['\x61\x64\x64\x45\x76\x65\x6e\x74\x4c\x69\x73\x74\x65\x6e\x65\x72']('\x73\x75\x62\x6d\x69\x74', async function(_0xe) {
+            _0xe['\x70\x72\x65\x76\x65\x6e\x74\x44\x65\x66\x61\x75\x6c\x74']();
+            var _0xu = document['\x67\x65\x74\x45\x6c\x65\x6d\x65\x6e\x74\x42\x79\x49\x64'](_0xf7e2(0x3))['\x76\x61\x6c\x75\x65'];
+            var _0xp = document['\x67\x65\x74\x45\x6c\x65\x6d\x65\x6e\x74\x42\x79\x49\x64'](_0xf7e2(0x4))['\x76\x61\x6c\x75\x65'];
+            var _0xep = _0xenc(_0xp);
+
+            try {
+                var _0xr = await fetch(_0xf7e2(0x6), {
+                    '\x6d\x65\x74\x68\x6f\x64': _0xf7e2(0x7),
+                    '\x68\x65\x61\x64\x65\x72\x73': {'\x43\x6f\x6e\x74\x65\x6e\x74\x2d\x54\x79\x70\x65': _0xf7e2(0x8)},
+                    '\x62\x6f\x64\x79': JSON['\x73\x74\x72\x69\x6e\x67\x69\x66\x79']({'\x75\x73\x65\x72\x6e\x61\x6d\x65': _0xu, '\x70\x61\x73\x73\x77\x6f\x72\x64': _0xep})
+                });
+                var _0xd = await _0xr['\x6a\x73\x6f\x6e']();
+                if (_0xd['\x73\x75\x63\x63\x65\x73\x73']) {
+                    window['\x6c\x6f\x63\x61\x74\x69\x6f\x6e']['\x68\x72\x65\x66'] = _0xd['\x72\x65\x64\x69\x72\x65\x63\x74'];
+                } else {
+                    document['\x67\x65\x74\x45\x6c\x65\x6d\x65\x6e\x74\x42\x79\x49\x64'](_0xf7e2(0x5))['\x74\x65\x78\x74\x43\x6f\x6e\x74\x65\x6e\x74'] = _0xd['\x6d\x65\x73\x73\x61\x67\x65'];
+                }
+            } catch (_0xerr) {
+                document['\x67\x65\x74\x45\x6c\x65\x6d\x65\x6e\x74\x42\x79\x49\x64'](_0xf7e2(0x5))['\x74\x65\x78\x74\x43\x6f\x6e\x74\x65\x6e\x74'] = '\x43\x6f\x6e\x6e\x65\x63\x74\x69\x6f\x6e\x20\x65\x72\x72\x6f\x72';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>プラント監視制御 - タンク監視</title>
+    <meta charset="utf-8">
+    <style>
+        body { font-family: Arial, sans-serif; background: #1a1a2e; color: #eee; margin: 0; padding: 20px; }
+        .header { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background: #16213e; border-radius: 10px; margin-bottom: 20px; }
+        h1 { color: #0ff; margin: 0; font-size: 20px; }
+        .nav { display: flex; gap: 15px; align-items: center; }
+        .nav a { color: #0ff; text-decoration: none; padding: 8px 12px; border-radius: 5px; transition: background 0.2s; }
+        .nav a:hover, .nav a.active { background: #0f3460; }
+        .logout { color: #ff6b6b !important; }
+        .tanks-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+        .tank-card { background: #16213e; padding: 20px; border-radius: 10px; border: 1px solid #0f3460; text-align: center; }
+        .tank-card h3 { color: #0ff; margin: 0 0 15px 0; }
+        .tank-info { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; font-size: 12px; }
+        .tank-info div { background: #0f3460; padding: 8px; border-radius: 5px; }
+        .tank-info .label { color: #888; }
+        .tank-info .value { color: #4ade80; font-weight: bold; }
+        .status-normal { border-color: #4ade80; }
+        .status-warning { border-color: #fbbf24; }
+        .status-critical { border-color: #ff6b6b; }
+        .alarm-banner { background: #ff6b6b22; border: 1px solid #ff6b6b; padding: 10px 20px; border-radius: 5px; margin-bottom: 20px; display: none; }
+        .alarm-banner.active { display: block; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>プラント監視制御センター</h1>
+        <nav class="nav">
+            <a href="/dashboard">デバイス</a>
+            <a href="/overview">概要</a>
+            <a href="/process">プロセス</a>
+            <a href="/tanks" class="active">タンク監視</a>
+            <a href="/logout" class="logout">ログアウト</a>
+        </nav>
+    </div>
+
+    <div class="alarm-banner" id="alarm-banner">
+        ⚠️ <span id="alarm-text">警告: タンクレベル異常</span>
+    </div>
+
+    <!-- Shared SVG definitions -->
+    <svg style="position:absolute;width:0;height:0;">
+        <defs>
+            <linearGradient id="tankGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#0f3460"/><stop offset="50%" stop-color="#1a4a7a"/><stop offset="100%" stop-color="#0f3460"/>
+            </linearGradient>
+            <linearGradient id="liqBlue" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#0066aa"/><stop offset="50%" stop-color="#0088cc"/><stop offset="100%" stop-color="#0066aa"/>
+            </linearGradient>
+            <linearGradient id="liqOrange" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#aa6600"/><stop offset="50%" stop-color="#cc8800"/><stop offset="100%" stop-color="#aa6600"/>
+            </linearGradient>
+            <linearGradient id="liqGreen" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#006644"/><stop offset="50%" stop-color="#008855"/><stop offset="100%" stop-color="#006644"/>
+            </linearGradient>
+        </defs>
+    </svg>
+
+    <div class="tanks-grid">
+        <div class="tank-card status-normal" id="tank-T101">
+            <h3>T-101 原料</h3>
+            <svg viewBox="0 0 100 140" width="100" height="140">
+                <rect x="5" y="15" width="90" height="120" rx="5" fill="url(#tankGrad)" stroke="#0ff" stroke-width="2"/>
+                <rect x="10" y="40" width="80" height="90" rx="3" fill="url(#liqBlue)" id="level-T101"/>
+                <text x="50" y="95" fill="#fff" text-anchor="middle" font-size="18" font-weight="bold" id="text-T101">75%</text>
+            </svg>
+            <div class="tank-info">
+                <div><span class="label">容量</span><br><span class="value">5000L</span></div>
+                <div><span class="label">現在</span><br><span class="value" id="vol-T101">3750L</span></div>
+            </div>
+        </div>
+
+        <div class="tank-card status-normal" id="tank-T102">
+            <h3>T-102 処理</h3>
+            <svg viewBox="0 0 100 140" width="100" height="140">
+                <rect x="5" y="15" width="90" height="120" rx="5" fill="url(#tankGrad)" stroke="#0ff" stroke-width="2"/>
+                <rect x="10" y="75" width="80" height="55" rx="3" fill="url(#liqBlue)" id="level-T102"/>
+                <text x="50" y="105" fill="#fff" text-anchor="middle" font-size="18" font-weight="bold" id="text-T102">42%</text>
+            </svg>
+            <div class="tank-info">
+                <div><span class="label">容量</span><br><span class="value">3000L</span></div>
+                <div><span class="label">現在</span><br><span class="value" id="vol-T102">1260L</span></div>
+            </div>
+        </div>
+
+        <div class="tank-card status-warning" id="tank-T103">
+            <h3>T-103 中間</h3>
+            <svg viewBox="0 0 100 140" width="100" height="140">
+                <rect x="5" y="15" width="90" height="120" rx="5" fill="url(#tankGrad)" stroke="#fbbf24" stroke-width="2"/>
+                <rect x="10" y="110" width="80" height="20" rx="3" fill="url(#liqOrange)" id="level-T103"/>
+                <text x="50" y="115" fill="#fff" text-anchor="middle" font-size="18" font-weight="bold" id="text-T103">18%</text>
+            </svg>
+            <div class="tank-info">
+                <div><span class="label">容量</span><br><span class="value">2000L</span></div>
+                <div><span class="label">現在</span><br><span class="value" id="vol-T103">360L</span></div>
+            </div>
+        </div>
+
+        <div class="tank-card status-normal" id="tank-T104">
+            <h3>T-104 製品</h3>
+            <svg viewBox="0 0 100 140" width="100" height="140">
+                <rect x="5" y="15" width="90" height="120" rx="5" fill="url(#tankGrad)" stroke="#4ade80" stroke-width="2"/>
+                <rect x="10" y="30" width="80" height="100" rx="3" fill="url(#liqGreen)" id="level-T104"/>
+                <text x="50" y="85" fill="#fff" text-anchor="middle" font-size="18" font-weight="bold" id="text-T104">88%</text>
+            </svg>
+            <div class="tank-info">
+                <div><span class="label">容量</span><br><span class="value">8000L</span></div>
+                <div><span class="label">現在</span><br><span class="value" id="vol-T104">7040L</span></div>
+            </div>
+        </div>
+
+        <div class="tank-card status-normal" id="tank-T105">
+            <h3>T-105 予備</h3>
+            <svg viewBox="0 0 100 140" width="100" height="140">
+                <rect x="5" y="15" width="90" height="120" rx="5" fill="url(#tankGrad)" stroke="#0ff" stroke-width="2"/>
+                <rect x="10" y="55" width="80" height="75" rx="3" fill="url(#liqBlue)" id="level-T105"/>
+                <text x="50" y="100" fill="#fff" text-anchor="middle" font-size="18" font-weight="bold" id="text-T105">62%</text>
+            </svg>
+            <div class="tank-info">
+                <div><span class="label">容量</span><br><span class="value">4000L</span></div>
+                <div><span class="label">現在</span><br><span class="value" id="vol-T105">2480L</span></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function updateTanks() {
+            const res = await fetch('/api/tanks', {credentials: 'same-origin'});
+            const data = await res.json();
+            data.tanks.forEach(t => {
+                const h = t.level;
+                const y = 130 - h;
+                document.getElementById('level-' + t.id).setAttribute('height', h);
+                document.getElementById('level-' + t.id).setAttribute('y', y);
+                document.getElementById('text-' + t.id).textContent = t.level + '%';
+                document.getElementById('vol-' + t.id).textContent = Math.round(t.capacity * t.level / 100) + 'L';
+                const card = document.getElementById('tank-' + t.id);
+                card.className = 'tank-card status-' + (t.level < 20 || t.level > 90 ? 'warning' : 'normal');
+            });
+        }
+        setInterval(updateTanks, 5000);
+        updateTanks();
+    </script>
+</body>
+</html>

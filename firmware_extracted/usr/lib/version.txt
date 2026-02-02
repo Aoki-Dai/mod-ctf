@@ -1,0 +1,4 @@
+Firmware Version: 2.4.1
+Build Date: 2025-11-05
+Manufacturer: MOD Systems Inc.
+Model: MS-GW1000

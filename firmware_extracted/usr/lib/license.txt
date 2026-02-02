@@ -1,0 +1,7 @@
+MOD Systems Gateway Device License Agreement
+
+This device is licensed for use by the purchaser only.
+Redistribution or reverse engineering is prohibited.
+
+Copyright (c) 2025 MOD Systems Inc.
+All rights reserved.

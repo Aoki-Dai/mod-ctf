@@ -1,0 +1,12 @@
+password
+12345678
+admin
+CTF_Challenge
+ctf_challenge
+challenge
+plant
+factory
+airbridge
+wifi
+1234567890
+qwertyuiop

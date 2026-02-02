@@ -1,0 +1,5 @@
+[    0.000000] Linux version 4.14.63 (builder@buildhost)
+[    0.000000] CPU: ARMv7 Processor [410fc075] revision 5 (ARMv7)
+[    0.000000] Machine model: Generic MOD Device
+[    1.234567] Warning: unable to open an initial console.
+[    2.345678] Freeing unused kernel memory: 1024K

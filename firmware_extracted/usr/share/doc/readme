@@ -1,0 +1,11 @@
+MOD Gateway Device Documentation
+
+For detailed documentation, please visit:
+https://www.mod-systems.example.com/docs
+
+Quick Start Guide:
+1. Connect the device to power
+2. Connect Ethernet cable
+3. Access web interface at http://192.168.1.1
+
+Default credentials: admin/admin

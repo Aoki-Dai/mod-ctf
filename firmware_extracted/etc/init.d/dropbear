@@ -1,0 +1,7 @@
+#!/bin/sh
+start() {
+    dropbear -R
+}
+stop() {
+    killall dropbear
+}

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>プラント監視制御 - プロセス</title>
+    <meta charset="utf-8">
+    <style>
+        body { font-family: Arial, sans-serif; background: #1a1a2e; color: #eee; margin: 0; padding: 20px; }
+        .header { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background: #16213e; border-radius: 10px; margin-bottom: 20px; }
+        h1 { color: #0ff; margin: 0; font-size: 20px; }
+        .nav { display: flex; gap: 15px; align-items: center; }
+        .nav a { color: #0ff; text-decoration: none; padding: 8px 12px; border-radius: 5px; transition: background 0.2s; }
+        .nav a:hover, .nav a.active { background: #0f3460; }
+        .logout { color: #ff6b6b !important; }
+        .card { background: #16213e; padding: 20px; border-radius: 10px; border: 1px solid #0f3460; }
+        .card h2 { color: #0ff; margin-top: 0; font-size: 18px; }
+        .process-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-top: 20px; }
+        .process-card { background: #0f3460; padding: 15px; border-radius: 8px; text-align: center; }
+        .process-card h3 { color: #0ff; margin: 0 0 10px 0; font-size: 14px; }
+        .process-value { font-size: 28px; font-weight: bold; color: #4ade80; }
+        .process-unit { color: #888; font-size: 12px; }
+        .valve-open { color: #4ade80; }
+        .valve-closed { color: #ff6b6b; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>プラント監視制御センター</h1>
+        <nav class="nav">
+            <a href="/dashboard">デバイス</a>
+            <a href="/overview">概要</a>
+            <a href="/process" class="active">プロセス</a>
+            <a href="/tanks">タンク監視</a>
+            <a href="/logout" class="logout">ログアウト</a>
+        </nav>
+    </div>
+
+    <div class="card">
+        <h2>プロセスフロー図</h2>
+        <svg viewBox="0 0 950 350" style="width: 100%;">
+            <!-- Background -->
+            <rect width="950" height="350" fill="#1a1a2e"/>
+
+            <!-- Input Section -->
+            <g id="input-section">
+                <rect x="20" y="120" width="60" height="80" fill="#1a1a2e" stroke="#0ff" stroke-width="2" rx="3"/>
+                <rect x="25" y="150" width="50" height="45" fill="#0077be"/>
+                <text x="50" y="110" fill="#0ff" text-anchor="middle" font-size="11">原料タンク</text>
+                <text x="50" y="175" fill="#fff" text-anchor="middle" font-size="12" font-weight="bold">85%</text>
+            </g>
+
+            <!-- Valve 1 -->
+            <g id="valve1" transform="translate(120, 150)">
+                <polygon points="0,0 20,10 0,20" fill="#4ade80" stroke="#fff" stroke-width="1"/>
+                <polygon points="20,10 40,0 40,20" fill="#4ade80" stroke="#fff" stroke-width="1"/>
+                <text x="20" y="35" fill="#888" text-anchor="middle" font-size="9">V-101</text>
+                <text x="20" y="-5" fill="#4ade80" text-anchor="middle" font-size="9">OPEN</text>
+            </g>
+
+            <!-- Pipe 1 -->
+            <path d="M80 160 L120 160" stroke="#0077be" stroke-width="8"/>
+            <path d="M160 160 L200 160" stroke="#0077be" stroke-width="8"/>
+
+            <!-- Pump 1 -->
+            <g id="pump1" transform="translate(200, 135)">
+                <circle cx="25" cy="25" r="25" fill="#1a1a2e" stroke="#4ade80" stroke-width="2"/>
+                <circle cx="25" cy="25" r="15" fill="#0f3460"/>
+                <path d="M15 25 L35 25 M25 15 L25 35" stroke="#4ade80" stroke-width="2"/>
+                <text x="25" y="65" fill="#888" text-anchor="middle" font-size="9">P-101</text>
+                <circle cx="55" cy="10" r="6" fill="#4ade80"/>
+            </g>
+
+            <!-- Pipe 2 -->
+            <path d="M250 160 L300 160" stroke="#0077be" stroke-width="8"/>
+
+            <!-- Heat Exchanger -->
+            <g id="heat-exchanger" transform="translate(300, 120)">
+                <rect x="0" y="0" width="80" height="80" fill="#1a1a2e" stroke="#fbbf24" stroke-width="2" rx="3"/>
+                <path d="M10 20 L70 20 L10 40 L70 40 L10 60 L70 60" stroke="#fbbf24" stroke-width="2" fill="none"/>
+                <text x="40" y="-5" fill="#fbbf24" text-anchor="middle" font-size="10">熱交換器</text>
+                <text x="40" y="95" fill="#4ade80" text-anchor="middle" font-size="11">52.3°C</text>
+            </g>
+
+            <!-- Pipe 3 -->
+            <path d="M380 160 L430 160" stroke="#ff7f50" stroke-width="8"/>
+
+            <!-- Reactor -->
+            <g id="reactor" transform="translate(430, 80)">
+                <rect x="0" y="0" width="100" height="140" fill="#1a1a2e" stroke="#a78bfa" stroke-width="2" rx="5"/>
+                <ellipse cx="50" cy="10" rx="45" ry="10" fill="#1a1a2e" stroke="#a78bfa" stroke-width="2"/>
+                <line x1="20" y1="40" x2="80" y2="40" stroke="#a78bfa" stroke-width="1"/>
+                <line x1="20" y1="70" x2="80" y2="70" stroke="#a78bfa" stroke-width="1"/>
+                <line x1="20" y1="100" x2="80" y2="100" stroke="#a78bfa" stroke-width="1"/>
+                <text x="50" y="-15" fill="#a78bfa" text-anchor="middle" font-size="10">反応器</text>
+                <text x="50" y="60" fill="#fff" text-anchor="middle" font-size="10">圧力: 4.2 bar</text>
+                <text x="50" y="90" fill="#fff" text-anchor="middle" font-size="10">温度: 78.5°C</text>
+                <text x="50" y="120" fill="#4ade80" text-anchor="middle" font-size="10">正常運転</text>
+            </g>
+
+            <!-- Pipe 4 -->
+            <path d="M530 160 L580 160" stroke="#ff7f50" stroke-width="8"/>
+
+            <!-- Valve 2 -->
+            <g id="valve2" transform="translate(580, 150)">
+                <polygon points="0,0 20,10 0,20" fill="#4ade80" stroke="#fff" stroke-width="1"/>
+                <polygon points="20,10 40,0 40,20" fill="#4ade80" stroke="#fff" stroke-width="1"/>
+                <text x="20" y="35" fill="#888" text-anchor="middle" font-size="9">V-102</text>
+                <text x="20" y="-5" fill="#4ade80" text-anchor="middle" font-size="9">OPEN</text>
+            </g>
+
+            <!-- Pipe 5 -->
+            <path d="M620 160 L680 160" stroke="#ff7f50" stroke-width="8"/>
+
+            <!-- Separator -->
+            <g id="separator" transform="translate(680, 100)">
+                <ellipse cx="40" cy="60" rx="35" ry="60" fill="#1a1a2e" stroke="#0ff" stroke-width="2"/>
+                <line x1="5" y1="80" x2="75" y2="80" stroke="#0ff" stroke-width="1" stroke-dasharray="5,3"/>
+                <rect x="20" y="80" width="40" height="35" fill="#0077be" opacity="0.6"/>
+                <text x="40" y="-10" fill="#0ff" text-anchor="middle" font-size="10">分離器</text>
+            </g>
+
+            <!-- Output pipes -->
+            <path d="M755 130 L850 130" stroke="#90EE90" stroke-width="6"/>
+            <path d="M755 160 L850 160" stroke="#0077be" stroke-width="6"/>
+
+            <!-- Output labels -->
+            <text x="870" y="135" fill="#90EE90" font-size="10">気体出力</text>
+            <text x="870" y="165" fill="#0077be" font-size="10">液体出力</text>
+
+            <!-- Flow indicators -->
+            <g transform="translate(0, 280)">
+                <rect x="20" y="0" width="910" height="50" fill="#0f3460" rx="5"/>
+                <text x="40" y="20" fill="#0ff" font-size="11">リアルタイム流量:</text>
+                <text x="180" y="20" fill="#fff" font-size="11">入力: <tspan fill="#4ade80" id="flow-in">125.8</tspan> L/min</text>
+                <text x="350" y="20" fill="#fff" font-size="11">処理: <tspan fill="#4ade80" id="flow-proc">118.2</tspan> L/min</text>
+                <text x="520" y="20" fill="#fff" font-size="11">出力: <tspan fill="#4ade80" id="flow-out">115.5</tspan> L/min</text>
+                <text x="700" y="20" fill="#fff" font-size="11">効率: <tspan fill="#4ade80" id="efficiency">91.8</tspan>%</text>
+                <text x="40" y="40" fill="#888" font-size="10">最終更新: <tspan id="last-update">--:--:--</tspan></text>
+            </g>
+        </svg>
+    </div>
+
+    <div class="process-grid">
+        <div class="process-card">
+            <h3>入力流量</h3>
+            <div class="process-value" id="val-flow-in">125.8</div>
+            <div class="process-unit">L/min</div>
+        </div>
+        <div class="process-card">
+            <h3>処理温度</h3>
+            <div class="process-value" id="val-temp">78.5</div>
+            <div class="process-unit">°C</div>
+        </div>
+        <div class="process-card">
+            <h3>反応圧力</h3>
+            <div class="process-value" id="val-pressure">4.2</div>
+            <div class="process-unit">bar</div>
+        </div>
+        <div class="process-card">
+            <h3>処理効率</h3>
+            <div class="process-value" id="val-efficiency">91.8</div>
+            <div class="process-unit">%</div>
+        </div>
+    </div>
+
+    <script>
+        async function updateProcess() {
+            const res = await fetch('/api/process', {credentials: 'same-origin'});
+            const data = await res.json();
+            document.getElementById('flow-in').textContent = data.flow_in;
+            document.getElementById('flow-proc').textContent = data.flow_proc;
+            document.getElementById('flow-out').textContent = data.flow_out;
+            document.getElementById('efficiency').textContent = data.efficiency;
+            document.getElementById('val-flow-in').textContent = data.flow_in;
+            document.getElementById('val-temp').textContent = data.temp;
+            document.getElementById('val-pressure').textContent = data.pressure;
+            document.getElementById('val-efficiency').textContent = data.efficiency;
+            document.getElementById('last-update').textContent = data.last_update;
+        }
+        setInterval(updateProcess, 5000);
+        updateProcess();
+    </script>
+</body>
+</html>

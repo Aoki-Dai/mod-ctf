@@ -1,0 +1,65 @@
+
+import itertools
+
+ciphertext = "EFLVK OVLJP MWQEQ NHIJR TTLIE TCHLT WCJNW SEFBT WHJVM JMSTV LRKMR KGDGH JVITR WUDMC TFEYW JZGWK ACTUE DTQHI HUKBU SHBXR YEREZ XHYCS CKYYO GBUZG OZIIL ANXKM YRNEK HU"
+ct = ciphertext.replace(" ", "")
+
+# Double Lattice suggests:
+# 1. Two grids?
+# 2. Key is derived from "Outer".
+
+# Let's brute force Vigenere with keys generated from "Outer" candidates.
+# "Outer" might be the Key itself? No, "Decrypting Outer reveals Inner Key".
+
+# What if the key is short? "GRID"? "TWO"?
+# I tried these in solve.py
+
+# Let's try to reverse the process.
+# Maybe "Outer" is a specific grid type, like "Turning Grille".
+
+# Try "Vigenere Autokey"?
+# Try "Beaufort"?
+
+# "Hint 1: Outer Cipher (3 pt)" -> implies it's solvable independently.
+# "Hint 2: Inner Cipher (3 pt)"
+
+# Maybe it's a simple anagram?
+# "EFLVK ..." -> "KEY IS ..."
+
+# Let's look at the letter counts again.
+# High freq: E(9), T(9), L(8), W(7), H(7), J(7).
+# "J" is surprisingly high (7 times, ~5%). Standard English J is 0.15%.
+# High "J" might indicate substitution.
+# J -> E? (Caesar -5). 
+# E -> Z?
+# If J -> E, shift is -5.
+# Let's check Shift -5 (Shift 21).
+# JKQAP... No.
+
+# If Vigenere, J comes from Plain + Key.
+# If Key is 'A', J->J.
+# If Plain is 'THE', Key '...'.
+
+# What if "Outer" means "First half"?
+# Or "Even chars"?
+
+# Let's reconsider "Double Lattice".
+# "Nijuu no Koushi".
+# Could it be "Bifid"? (Bifid uses a Polybius Square).
+# I ran Bifid attack, didn't see anything.
+
+# What if the text IS the key wrapped in something?
+# "Outer cipher... reveals key".
+# "Inner cipher".
+# Maybe the text contains BOTH?
+
+# Let's check for "KEY" in the *ciphertext itself* (subsequences)? No.
+
+# Let's assume the user is right about "Rail Fence".
+# User: "Result: ETFFLEVYKWOJVZLGJWPK..."
+# Maybe this result IS Vigenere ciphertext?
+# Let's analyze `ETFFLEVYKWOJVZLGJWPK...` for IC.
+rf2_text = "ETFFLEVYKWOJVZLGJWPK..." # (I need to generate the full string)
+
+# Let's modify solve.py to analyze the Rail Fence 2 output.
+

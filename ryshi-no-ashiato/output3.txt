@@ -1,0 +1,11 @@
+=== ML-DSA Signature Service ===
+Post-Quantum Cryptography Test Server (FIPS 204)
+
+1. Get public key
+2. Sign a message
+3. Show signature history
+4. Get flag (requires secret key s1)
+5. Exit
+
+> No signatures yet
+> 

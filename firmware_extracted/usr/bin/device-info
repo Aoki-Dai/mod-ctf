@@ -1,0 +1,4 @@
+#!/bin/sh
+echo "Device Model: MS-GW1000"
+echo "Firmware: 2.4.1"
+echo "Uptime: $(uptime)"

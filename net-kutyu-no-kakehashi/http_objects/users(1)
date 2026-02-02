@@ -1,0 +1,1 @@
+{"users": [{"id": 1, "name": "admin", "email": "admin@scada-system.local", "role": "administrator"}, {"id": 2, "name": "operator", "email": "operator@scada-system.local", "role": "operator"}, {"id": 3, "name": "guest", "email": "guest@scada-system.local", "role": "viewer"}], "chacha_key": "PLANT_ChaCha20_SecretKey_2026!!", "chacha_nonce": "PLC_N0nc3_!!"}

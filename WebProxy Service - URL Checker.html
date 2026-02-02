@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<!-- saved from url=(0021)http://10.2.0.6:8085/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>WebProxy Service - URL Checker</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .form-group { margin: 20px 0; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input[type="url"] { width: 100%; padding: 12px; font-size: 16px; border: 1px solid #ddd; }
+        button { padding: 12px 24px; background: #007cba; color: white; border: none; cursor: pointer; font-size: 16px; }
+        button:hover { background: #005a8b; }
+        .result { margin: 20px 0; padding: 15px; background: #f9f9f9; border-left: 4px solid #007cba; }
+        .error { background: #ffe6e6; border-left-color: #d00; color: #d00; }
+        .response-content { background: white; padding: 15px; margin-top: 10px; border: 1px solid #ddd; white-space: pre-wrap; font-family: monospace; max-height: 400px; overflow-y: auto; }
+        .info-box { background: #e6f3ff; padding: 20px; margin: 20px 0; border-radius: 5px; }
+        .warning { background: #fff3cd; padding: 15px; margin: 20px 0; border: 1px solid #ffeaa7; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌐 WebProxy Service</h1>
+        <p>URLの安全性をチェックし、コンテンツをプレビューするサービスです</p>
+        
+        <form method="POST" action="http://10.2.0.6:8085/check" id="urlCheckForm">
+            <div class="form-group">
+                <label for="url">チェックするURL:</label>
+                <input type="url" id="url" name="url" placeholder="https://example.com" required="">
+            </div>
+            <button type="submit" id="submitBtn">URLをチェック</button>
+            <div id="loadingIndicator" style="display: none; margin-top: 10px; color: #007cba;">
+                🔄 チェック中...
+            </div>
+        </form>
+        
+        <script>
+            document.getElementById('urlCheckForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const form = this;
+                const submitBtn = document.getElementById('submitBtn');
+                const loadingIndicator = document.getElementById('loadingIndicator');
+                
+                // ボタンを無効化してローディング表示
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'チェック中...';
+                loadingIndicator.style.display = 'block';
+                
+                // FormDataを作成
+                const formData = new FormData(form);
+                
+                // fetchでPOSTリクエストを送信
+                fetch('/check', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    }
+                    return response.text();
+                })
+                .then(html => {
+                    // レスポンスのHTMLで現在のページを置き換え
+                    document.open();
+                    document.write(html);
+                    document.close();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('エラーが発生しました: ' + error.message);
+                    
+                    // エラー時はボタンを復元
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'URLをチェック';
+                    loadingIndicator.style.display = 'none';
+                });
+            });
+        </script>
+        
+        
+        
+        <div class="info-box">
+            <h3>📋 サービス情報</h3>
+            <ul>
+                <li>外部URLの安全性をチェックします</li>
+                <li>HTTPとHTTPSに対応</li>
+                <li>レスポンスヘッダーとコンテンツをプレビュー表示</li>
+                <li>ファイルサイズ制限: 5MB以下</li>
+                <li>サポートファイル: テキストベースのコンテンツのみ</li>
+                <li>タイムアウト: 10秒</li>
+            </ul>
+        </div>
+        
+        <div class="warning">
+            <h3>⚠️ セキュリティ注意事項</h3>
+            <p>このサービスは外部URLのチェック専用です。内部ネットワークへのアクセスは制限されています。</p>
+            <p>サポートプロトコル: HTTP, HTTPS</p>
+            <p>動画ファイル、音声ファイル、バイナリファイルはセキュリティ上の理由によりブロックされます。</p>
+            <p><strong>ブロック対象:</strong> ローカルホスト、内部ネットワーク、リンクローカルアドレス（169.254.0.0/16）</p>
+        </div>
+        
+        <div style="margin-top: 40px; padding: 20px; background: #f5f5f5; border-radius: 5px; font-size: 14px; color: #666;">
+            <h4>技術情報</h4>
+            <p>サーバー: Flask/Python</p>
+            <p>ポート: 8085 (外部アクセス用)</p>
+            <p>内部システム: localhost:8081 (管理者専用)</p>
+        </div>
+    </div>
+
+<div id="app_root"><template shadowrootmode="open"><div><!----><style>@import url(chrome-extension://mcfncmgpoefggbpeloigfonenlmamgjf/assets/content.css);</style></div></template></div><deepl-input-controller translate="no"><template shadowrootmode="open"><link rel="stylesheet" href="chrome-extension://cofdbpoegempjloogbagkncekinflcnj/build/content.css"><div dir="ltr" style="visibility: initial !important;"><div class="dl-input-translation-container svelte-95aucy"><div></div></div></div></template></deepl-input-controller></body></html>

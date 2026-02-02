@@ -1,0 +1,1 @@
+{"logs": [{"timestamp": "2025-11-28 09:15:32", "action": "LOGIN", "user": "admin", "ip": "192.168.1.100"}, {"timestamp": "2025-11-28 09:18:45", "action": "PLC_CONFIG", "user": "admin", "ip": "192.168.1.100"}, {"timestamp": "2025-11-28 10:30:00", "action": "DATA_EXPORT", "user": "operator", "ip": "192.168.1.101"}]}

@@ -1,0 +1,19 @@
+Package: base-files
+Version: 204-r7676
+Status: install ok installed
+Architecture: mips_24kc
+
+Package: busybox
+Version: 1.28.4-1
+Status: install ok installed
+Architecture: mips_24kc
+
+Package: dropbear
+Version: 2018.76-1
+Status: install ok installed
+Architecture: mips_24kc
+
+Package: dnsmasq
+Version: 2.80-1
+Status: install ok installed
+Architecture: mips_24kc

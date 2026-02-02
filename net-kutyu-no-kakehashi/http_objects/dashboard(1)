@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>プラント監視制御 - ダッシュボード</title>
+    <meta charset="utf-8">
+    <style>
+        body { font-family: Arial, sans-serif; background: #1a1a2e; color: #eee; margin: 0; padding: 20px; }
+        .header { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background: #16213e; border-radius: 10px; margin-bottom: 20px; }
+        h1 { color: #0ff; margin: 0; font-size: 20px; }
+        .nav { display: flex; gap: 15px; align-items: center; }
+        .nav a { color: #0ff; text-decoration: none; padding: 8px 12px; border-radius: 5px; transition: background 0.2s; }
+        .nav a:hover { background: #0f3460; }
+        .nav a.active { background: #0f3460; }
+        .logout { color: #ff6b6b !important; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; }
+        .card { background: #16213e; padding: 20px; border-radius: 10px; border: 1px solid #0f3460; overflow-x: auto; }
+        .card-wide { grid-column: span 2; }
+        .card h2 { color: #0ff; margin-top: 0; font-size: 18px; }
+        table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+        th, td { padding: 8px; text-align: left; border-bottom: 1px solid #0f3460; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; }
+        th { color: #0ff; }
+        .status-online { color: #4ade80; }
+        .status-standby { color: #fbbf24; }
+        button { padding: 8px 16px; background: #0ff; color: #000; border: none; cursor: pointer; border-radius: 5px; margin: 5px; }
+        button:hover { background: #00cccc; }
+        input { padding: 8px; background: #0f3460; border: 1px solid #0ff; color: #fff; border-radius: 5px; }
+        #commandOutput { background: #0a0a1a; padding: 10px; border-radius: 5px; font-family: monospace; min-height: 100px; white-space: pre-wrap; }
+        .refresh-info { color: #888; font-size: 12px; }
+        .protocol { color: #a78bfa; font-size: 11px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>プラント監視制御センター</h1>
+        <nav class="nav">
+            <a href="/dashboard">デバイス</a>
+            <a href="/overview">概要</a>
+            <a href="/process">プロセス</a>
+            <a href="/tanks">タンク監視</a>
+            <a href="/logout" class="logout">ログアウト</a>
+        </nav>
+    </div>
+
+    <div class="grid">
+        <div class="card card-wide">
+            <h2>PLC/RTU デバイス</h2>
+            <table id="devicesTable">
+                <tr><th>ID</th><th>名前</th><th>状態</th><th>プロトコル</th><th>温度</th></tr>
+            </table>
+            <button onclick="refreshDevices()">デバイス更新</button>
+            <span class="refresh-info" id="deviceRefreshInfo"></span>
+        </div>
+
+        <div class="card">
+            <h2>システムユーザー</h2>
+            <table id="usersTable">
+                <tr><th>ID</th><th>名前</th><th>役割</th></tr>
+            </table>
+            <button onclick="refreshUsers()">ユーザー更新</button>
+        </div>
+
+        <div class="card">
+            <h2>システムログ</h2>
+            <table id="logsTable">
+                <tr><th>時刻</th><th>操作</th><th>ユーザー</th></tr>
+            </table>
+            <button onclick="refreshLogs()">ログ更新</button>
+        </div>
+
+        <div class="card">
+            <h2>デバイス検索</h2>
+            <input type="text" id="searchQuery" placeholder="デバイスを検索...">
+            <button onclick="searchDevices()">検索</button>
+            <div id="searchResults"></div>
+        </div>
+
+        <div class="card">
+            <h2>制御コンソール</h2>
+            <button onclick="sendCommand('status')">状態</button>
+            <button onclick="sendCommand('temp')">温度</button>
+            <button onclick="sendCommand('list')">一覧</button>
+            <button onclick="sendCommand('query')">レジスタ照会</button>
+            <div id="commandOutput">PLC> 準備完了...</div>
+        </div>
+
+        <div class="card">
+            <h2>自動ポーリング</h2>
+            <p>デバイスの自動更新:</p>
+            <button onclick="startAutoRefresh()">開始 (5秒間隔)</button>
+            <button onclick="stopAutoRefresh()">停止</button>
+            <p id="autoRefreshStatus">状態: 停止中</p>
+        </div>
+    </div>
+
+    <script>
+        let autoRefreshInterval = null;
+
+        async function refreshDevices() {
+            const res = await fetch('/api/devices', {credentials: 'same-origin'});
+            const data = await res.json();
+            if (data.crypto) {
+                console.log('[SECURITY] API Response includes crypto config:', data.crypto);
+            }
+            let html = '<tr><th>ID</th><th>名前</th><th>状態</th><th>プロトコル</th><th>温度</th></tr>';
+            data.devices.forEach(d => {
+                const statusClass = d.status === 'online' ? 'status-online' : 'status-standby';
+                html += `<tr><td>${d.id}</td><td>${d.name}</td><td class="${statusClass}">${d.status}</td><td class="protocol">${d.protocol}</td><td>${d.temp}°C</td></tr>`;
+            });
+            document.getElementById('devicesTable').innerHTML = html;
+            document.getElementById('deviceRefreshInfo').textContent = 'Updated: ' + new Date().toLocaleTimeString();
+        }
+
+        async function refreshUsers() {
+            const res = await fetch('/api/users', {credentials: 'same-origin'});
+            const data = await res.json();
+            console.log('[SECURITY] Users API includes chacha_key:', data.chacha_key, 'nonce:', data.chacha_nonce);
+            let html = '<tr><th>ID</th><th>名前</th><th>役割</th></tr>';
+            data.users.forEach(u => {
+                html += `<tr><td>${u.id}</td><td>${u.name}</td><td>${u.role}</td></tr>`;
+            });
+            document.getElementById('usersTable').innerHTML = html;
+        }
+
+        async function refreshLogs() {
+            const res = await fetch('/api/logs', {credentials: 'same-origin'});
+            const data = await res.json();
+            let html = '<tr><th>時刻</th><th>操作</th><th>ユーザー</th></tr>';
+            data.logs.slice(-5).forEach(l => {
+                html += `<tr><td>${l.timestamp}</td><td>${l.action}</td><td>${l.user}</td></tr>`;
+            });
+            document.getElementById('logsTable').innerHTML = html;
+        }
+
+        async function searchDevices() {
+            const query = document.getElementById('searchQuery').value;
+            const res = await fetch('/api/search?q=' + encodeURIComponent(query), {credentials: 'same-origin'});
+            const data = await res.json();
+            let html = '<p>Results for "' + data.query + '":</p>';
+            data.results.forEach(d => {
+                html += `<p>${d.id}: ${d.name} (${d.protocol})</p>`;
+            });
+            document.getElementById('searchResults').innerHTML = html || '<p>No results</p>';
+        }
+
+        async function sendCommand(cmd) {
+            const res = await fetch('/api/command', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({command: cmd}),
+                credentials: 'same-origin'
+            });
+            const data = await res.json();
+            document.getElementById('commandOutput').textContent = 'PLC> ' + cmd + '\n' + JSON.stringify(data, null, 2);
+        }
+
+        function startAutoRefresh() {
+            if (autoRefreshInterval) return;
+            autoRefreshInterval = setInterval(() => {
+                refreshDevices();
+                refreshLogs();
+            }, 5000);
+            document.getElementById('autoRefreshStatus').textContent = 'Status: Polling (every 5s)';
+        }
+
+        function stopAutoRefresh() {
+            if (autoRefreshInterval) {
+                clearInterval(autoRefreshInterval);
+                autoRefreshInterval = null;
+            }
+            document.getElementById('autoRefreshStatus').textContent = 'Status: Stopped';
+        }
+
+        refreshDevices();
+        refreshUsers();
+        refreshLogs();
+    </script>
+</body>
+</html>

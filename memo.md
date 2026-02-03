@@ -6,7 +6,7 @@ data:audio/wav;base64,UklGRnQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YVAAAA
 
 ## 細胞の回帰
 
-http://10.2.4.11:5000/
+[http://10.2.4.11:5000/](http://10.2.4.11:5000/)
 
 ## SquashFS
 
@@ -61,4 +61,16 @@ Aircrack-ngは、802.11無線LANのセキュリティを評価するためのツ
 
 Kali LinuxやParrot OSなどのセキュリティ特化型ディストリビューションにプリインストールされています。
 
-##
+## grep
+
+grepは、ファイルやコマンドの出力から指定した文字列（正規表現パターン）に一致する行を検索・抽出して表示する、UNIX/Linuxで広く使われる強力なコマンド
+
+## nm
+
+nmコマンドは、LinuxなどのUNIX系OSにおいて、オブジェクトファイル、静的ライブラリ、実行可能ファイル（ELF形式など）のシンボルテーブル（関数名や変数名）を表示するデバッグツール
+
+使用例：オブジェクトファイルのシンボルを確認する
+
+```bash
+nm test.o
+```
